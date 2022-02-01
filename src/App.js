@@ -1,9 +1,16 @@
+import React, { Component } from 'react';
 import './App.css';
+import Clarifai from 'clarifai';
 import Particles from 'react-tsparticles';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Logo from "./components/Logo/Logo";
 import Navigation from './components/navigation/Navigation';
 import Rank from './components/Rank/Rank';
+import FaceRecognition from './components/FaceRecognition/FaceRecognition';
+
+const app = new Clarifai.App({
+ apiKey: 'c8b3bcdebc3b43928e57bba9fe28b2f5'
+});
 
 const particlesOptions = {
     fpsLimit: 60,
@@ -78,32 +85,64 @@ const particlesOptions = {
     detectRetina: true,
 }
 
-function App() {
-  const particlesInit = (main) => {
-    console.log(main);
+const particlesInit = (main) => {
+  console.log(main);
 
-    // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
-  };
+  // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
+};
 
-  const particlesLoaded = (container) => {
-    console.log(container);
-  };
+const particlesLoaded = (container) => {
+  console.log(container);
+};
 
-  return (
-    <div className="App">
-        <Particles className='particles'
-          id="tsparticles"
-          init={particlesInit}
-          loaded={particlesLoaded}
-          options={particlesOptions}
-        />
-        <Navigation />
-        <Logo />
-        <Rank />
-        <ImageLinkForm />
-        
-    </div>
-  );
+class App extends Component {
+  constructor(){
+    super();
+    this.state = {
+      input: '',
+      imageUrl: '',
+    }
+  }
+
+  onInputChange = (event)=>{
+    console.log(event.target.value);
+
+  }
+
+  onButtonSubmit = ()=>{
+    this.setState({
+      imageUrl:this.state.input
+    })
+    app.models.predict(
+      "c8b3bcdebc3b43928e57bba9fe28b2f5",
+      "https://samples.clarifai.com/face-det.jpg")
+      .then(
+        function(response){
+          console.log(response);
+        },
+        function(err){
+
+        }
+      );
+  }
+
+  render(){
+    return (
+      <div className="App">
+          <Particles className='particles'
+            id="tsparticles"
+            init={particlesInit}
+            loaded={particlesLoaded}
+            options={particlesOptions}
+          />
+          <Navigation />
+          <Logo />
+          <Rank />
+          <ImageLinkForm onInputChange={ this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
+          <FaceRecognition imageUrl={this.imageUrl} />
+      </div>
+    );
+  }
 }
 
 export default App;
