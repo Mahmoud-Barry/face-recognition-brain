@@ -117,7 +117,7 @@ class App extends Component {
     })
     app.models
       .predict(
-        Clarifai.COLOR_MODEL,
+        Clarifai.FACE_DETECT_MODEL,
         this.state.input)
       .then(
         function(response){
