@@ -5,6 +5,7 @@ import Particles from 'react-tsparticles';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Logo from "./components/Logo/Logo";
 import Navigation from './components/navigation/Navigation';
+import Signin from './components/Signin/SignIn';
 import Rank from './components/Rank/Rank';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 
@@ -154,6 +155,7 @@ class App extends Component {
             options={particlesOptions}
           />
           <Navigation />
+          <Signin />
           <Logo />
           <Rank />
           <ImageLinkForm onInputChange={ this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
